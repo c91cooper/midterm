@@ -28,8 +28,8 @@ const SingleEvent = ({itemData}) => {
     try {
       console.log("sending!");
       // try to update doc
-      const docref = await firebase.firestore().collection("events").doc(itemData.id);
-      const doc = docref.get();
+      const docref = firebase.firestore().collection("events").doc(itemData.id);
+      const doc = await docref.get();
 
       if (!doc.empty) {
         docref.update(
@@ -58,12 +58,12 @@ const SingleEvent = ({itemData}) => {
             children={<AddIcon color="gray.300" />}
           />
           <Input type="text" value={inputName} onChange={(e) => setInputName(e.target.value)} placeholder="Event Title" />
-          <Input type="text" value={inputDate} onChange={(e) => setInputDate(e.target.value)} placeholder="Event Date" />
+          <Input type="date" value={inputDate} onChange={(e) => setInputDate(e.target.value)} placeholder="Event Date" />
           <Button
             ml={2}
             onClick={() => sendData()}
           >
-            Update
+            Update Event
           </Button>
         </InputGroup>
         <Text>
@@ -88,7 +88,7 @@ export const getServerSideProps = withAuthUserTokenSSR(
       // document was found
       let docData = doc.data();
       itemData = {
-        id: doc.id,
+        id: docData.id,
         name: docData.name,
         date: docData.date.toDate().toDateString()
       };

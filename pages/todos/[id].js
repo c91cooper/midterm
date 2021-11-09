@@ -27,8 +27,8 @@ const SingleTodo = ({itemData}) => {
     try {
       console.log("sending!");
       // try to update doc
-      const docref = await firebase.firestore().collection("todo").doc(itemData.id);
-      const doc = docref.get();
+      const docref = firebase.firestore().collection("todo").doc(itemData.id);
+      const doc = await docref.get();
 
       if (!doc.empty) {
         docref.update(
